@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { PionEvents, PionSession } from "pion-browser-client";
+import html2canvas from "html2canvas";
 import adapter from "webrtc-adapter";
 import logo from "./logo.svg";
 import "./Photobooth.css";
@@ -84,6 +85,22 @@ class App extends Component {
     });
   }
 
+  handlePhoto() {
+    html2canvas(document.querySelector("#Photobooth")).then((canvas) => {
+      const ctx = canvas.getContext("2d");
+      const videos = document.querySelectorAll("video");
+
+      for (let i = 0; i < videos.length; i++) {
+        const rect = videos[i].getBoundingClientRect();
+        ctx.drawImage(videos[i], rect.x, rect.y, rect.width, rect.height);
+      }
+
+      var d = canvas.toDataURL("image/png");
+      var w = window.open("about:blank", "image from canvas");
+      w.document.write("<img src='" + d + "' alt='from canvas'/>");
+    });
+  }
+
   render() {
     const numVideos = this.state.sources.length + 1;
     const cols = Math.ceil(Math.sqrt(numVideos));
@@ -91,6 +108,7 @@ class App extends Component {
 
     return (
       <div id="Photobooth">
+        <canvas id="canvas" hidden />
         <div
           id="videos"
           style={{
@@ -108,7 +126,9 @@ class App extends Component {
           ))}
         </div>
         <div id="bar">
-          <button id="capture-button">Take Photo</button>
+          <button id="capture-button" onClick={this.handlePhoto}>
+            Take Photo
+          </button>
         </div>
       </div>
     );

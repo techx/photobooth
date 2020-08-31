@@ -12,6 +12,7 @@
   height: 52px;
   box-sizing: border-box;
   width: 180px;
+  border: none;
   border-radius: 2px;
 }
 
@@ -26,4 +27,5 @@
   height: 52px;
   box-sizing: border-box;
   padding: 0 12px;
+  font-size: 18px;
 }
