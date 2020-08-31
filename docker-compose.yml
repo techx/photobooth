@@ -7,9 +7,7 @@ services:
       - "5001:443"
     volumes:
       - ./signaler:/usr/local/src/github.com/pion/demo-conference/signaler
-  www:
-    build: ./www
+  frontend:
+    build: ./frontend
     ports:
       - "5000:443"
-    volumes:
-      - ./www:/usr/local/src/github.com/pion/demo-conference/www
