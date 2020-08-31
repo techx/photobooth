@@ -13,7 +13,9 @@ class App extends Component {
     this.state = {
       sources: [],
     };
+  }
 
+  componentDidMount() {
     navigator.getUserMedia(
       {
         video: true,
@@ -29,7 +31,7 @@ class App extends Component {
         let pionSession = new PionSession(SIGNALER_URI, "", {
           iceServers: [
             {
-              urls: "stun:localhost",
+              urls: "stun:stun.l.google.com:19302",
             },
           ],
           mandatory: { OfferToReceiveVideo: true, OfferToReceiveAudio: true },
@@ -82,13 +84,25 @@ class App extends Component {
   }
 
   render() {
+    const rows = Math.floor(Math.sqrt(this.state.sources.length));
+    const cols = rows + 1;
+
     return (
-      <div className="App">
-        <video id="localVideo" controls muted />
-        <div id="remoteVideos">
+      <div id="App">
+        <div
+          id="videos"
+          style={{
+            gridTemplateColumns: "repeat(" + cols + ", 1fr)",
+            gridTemplateRows: "repeat(" + rows + ", minmax(0, 1fr))",
+          }}
+        >
+          <video id="localVideo" controls muted />
           {this.state.sources.map((media) => (
             <video id={media.id} controls />
           ))}
+        </div>
+        <div id="bar">
+          <button>Take photo</button>
         </div>
       </div>
     );
