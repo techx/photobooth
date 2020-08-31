@@ -84,8 +84,9 @@ class App extends Component {
   }
 
   render() {
-    const rows = Math.floor(Math.sqrt(this.state.sources.length));
-    const cols = rows + 1;
+    const numVideos = this.state.sources.length + 1;
+    const cols = Math.ceil(Math.sqrt(numVideos));
+    const rows = Math.ceil(numVideos / cols);
 
     return (
       <div id="App">
@@ -96,9 +97,13 @@ class App extends Component {
             gridTemplateRows: "repeat(" + rows + ", minmax(0, 1fr))",
           }}
         >
-          <video id="localVideo" controls muted />
+          <div className="video-container">
+            <video id="localVideo" controls={false} muted />
+          </div>
           {this.state.sources.map((media) => (
-            <video id={media.id} controls />
+            <div className="video-container">
+              <video id={media.id} controls={false} />
+            </div>
           ))}
         </div>
         <div id="bar">

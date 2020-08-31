@@ -12,8 +12,10 @@
   padding: 32px;
 }
 
+.video-container,
 video {
-  max-width: 70%;
+  width: 100%;
+  height: 100%;
 }
 
 #bar {
