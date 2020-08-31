@@ -1,114 +1,31 @@
 import React, { Component } from "react";
-import { PionEvents, PionSession } from "pion-browser-client";
-import adapter from "webrtc-adapter";
-import logo from "./logo.svg";
 import "./App.css";
 
-const SIGNALER_URI = "localhost:5001";
+import CodeEntry from "./CodeEntry";
+import Photobooth from "./Photobooth";
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      sources: [],
+      code: "",
     };
   }
 
-  componentDidMount() {
-    navigator.getUserMedia(
-      {
-        video: true,
-        audio: true,
-      },
-      (localMediaStream) => {
-        let localVideo = document.getElementById("localVideo");
-        localVideo.srcObject = localMediaStream;
-        localVideo.onloadedmetadata = function (e) {
-          localVideo.play();
-        };
-
-        let pionSession = new PionSession(SIGNALER_URI, "", {
-          iceServers: [
-            {
-              urls: "stun:stun.l.google.com:19302",
-            },
-          ],
-          mandatory: { OfferToReceiveVideo: true, OfferToReceiveAudio: true },
-        });
-
-        pionSession.eventHandler = (event) => {
-          switch (event.type) {
-            case PionEvents.MEDIA_START:
-              this.setState({
-                sources: this.state.sources.concat([event.media]),
-              });
-
-              break;
-            case PionEvents.MEDIA_STOP:
-              const idx = this.state.sources.find(
-                (media) => event.media.id === media.id
-              );
-
-              const sources = this.state.sources;
-              sources.splice(idx, 1);
-
-              this.setState({
-                sources,
-              });
-
-              break;
-            default:
-              console.warn(event);
-          }
-        };
-        pionSession.start();
-        pionSession.addMedia(localMediaStream);
-      },
-      function (err) {
-        console.log(
-          "The following error occurred when trying to use getUserMedia: " + err
-        );
-      }
-    );
-  }
-
-  componentDidUpdate() {
-    this.state.sources.forEach((media) => {
-      const videoElem = document.getElementById(media.id);
-      videoElem.srcObject = media;
-      videoElem.onloadedmetadata = function (e) {
-        videoElem.play();
-      };
+  handleSubmitCode = (code) =>
+    this.setState({
+      code,
     });
-  }
 
   render() {
-    const numVideos = this.state.sources.length + 1;
-    const cols = Math.ceil(Math.sqrt(numVideos));
-    const rows = Math.ceil(numVideos / cols);
-
     return (
       <div id="App">
-        <div
-          id="videos"
-          style={{
-            gridTemplateColumns: "repeat(" + cols + ", 1fr)",
-            gridTemplateRows: "repeat(" + rows + ", minmax(0, 1fr))",
-          }}
-        >
-          <div className="video-container">
-            <video id="localVideo" controls={false} muted />
-          </div>
-          {this.state.sources.map((media) => (
-            <div className="video-container">
-              <video id={media.id} controls={false} />
-            </div>
-          ))}
-        </div>
-        <div id="bar">
-          <button>Take photo</button>
-        </div>
+        {this.state.code.length === 0 ? (
+          <CodeEntry onSubmitCode={this.handleSubmitCode} />
+        ) : (
+          <Photobooth room={this.state.code} />
+        )}
       </div>
     );
   }

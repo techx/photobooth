@@ -1,0 +1,29 @@
+#CodeEntry {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+#CodeEntry input {
+  font-size: 20px;
+  padding: 0 12px;
+  text-align: center;
+  height: 52px;
+  box-sizing: border-box;
+  width: 180px;
+  border-radius: 2px;
+}
+
+#CodeEntry button {
+  background: #26acc5;
+  color: #fff;
+  cursor: pointer;
+  border: none;
+  border-radius: 2px;
+  outline: none;
+  margin-left: 12px;
+  height: 52px;
+  box-sizing: border-box;
+  padding: 0 12px;
+}

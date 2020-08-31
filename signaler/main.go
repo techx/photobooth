@@ -23,7 +23,12 @@ func randSeq(n int) string {
 }
 
 func (m *MySignalerServer) AuthenticateRequest(params url.Values) (apiKey, room, sessionKey string, ok bool) {
-	return "ABC", "ABC", randSeq(16), true
+	for k, _ := range params {
+		room = k
+		break
+	}
+
+	return "ABC", room, randSeq(16), true
 }
 
 func (m *MySignalerServer) OnClientMessage(ApiKey, Room, SessionKey string, raw []byte) {

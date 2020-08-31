@@ -1,24 +1,4 @@
 #App {
-  display: grid;
-  grid-template-rows: minmax(0, 1fr) auto;
+  background: #fbcdc2;
   height: 100%;
-}
-
-#videos {
-  display: grid;
-  align-items: center;
-  justify-items: center;
-  grid-gap: 32px;
-  padding: 32px;
-}
-
-.video-container,
-video {
-  width: 100%;
-  height: 100%;
-}
-
-#bar {
-  background: red;
-  height: 128px;
 }
