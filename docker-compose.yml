@@ -7,14 +7,6 @@ services:
       - "5001:443"
     volumes:
       - ./signaler:/usr/local/src/github.com/pion/demo-conference/signaler
-  turn:
-    build: ./turn
-    environment:
-      - REALM=localhost
-    ports:
-      - "3478:3478/udp"
-    volumes:
-      - ./turn:/usr/local/src/github.com/pion/demo-conference/turn
   www:
     build: ./www
     ports:
